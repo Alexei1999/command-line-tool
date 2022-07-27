@@ -10,7 +10,7 @@ module.exports.parseArgsLib = {
 
     return value;
   },
-  hasOption(config) {
+  extractPresence(config) {
     if (!config) {
       throw new Error(`Argument ${config} is required`);
     }

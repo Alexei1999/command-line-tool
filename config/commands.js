@@ -1,13 +1,14 @@
-const { commonLib } = require("../helpers/common-lib");
+const path = require("path");
+const fs = require("fs");
 
-module.exports.commands = {
+const commands = {
   help: {
     beforeInitilize: true,
     name: "help",
     describe: "Show help",
     command: "help",
     option: "--help",
-    handler: async () => {
+    handler: async ({ options }) => {
       const optionsTable = Object.entries(options).reduce(
         (acc, [id, option]) => {
           acc[id] = {
@@ -65,136 +66,113 @@ module.exports.commands = {
     beforeInitilize: false,
     name: "run",
     describe: "Run script",
-    command: undefined,
-    option: undefined,
-    exitAfterExecute: true,
-    handler: async ({ values }) => {
-      const folderName = values.repoSshUrl.split("/").pop().replace(".git", "");
+    handler: async ({ values }, { launchCommand, launchBlock }) => {
+      const folderName = values.repoUrl.split("/").pop().replace(".git", "");
 
-      const folderPath = path.resolve(__dirname, "./", folderName);
+      const rootPath = path.resolve(__dirname, "..");
+      const folderPath = path.resolve(rootPath, folderName);
 
-      console.log(`Cloning ${values.repoSshUrl} to ${folderPath}`);
       if (fs.existsSync(folderPath)) {
         console.log(`Folder ${folderPath} is already exists`);
       } else {
-        try {
-          await commonLib.promisifiedSpawn(`git clone ${values.repoSshUrl}`);
-        } catch (e) {
-          console.error(`Failed to clone ${values.repoSshUrl}`);
+        await launchBlock(
+          async () => {
+            await launchCommand(`git clone ${values.repoUrl}`, {
+              cwd: rootPath,
+            });
+          },
+          {
+            name: "Clone repo",
+            "Repo ssh url": values.repoUrl,
+            "Folder path": folderPath,
+            "Root path": rootPath,
+          }
+        );
+      }
 
-          commonLib.logErrorContext(
-            "Clone repo",
-            {
-              "Repo ssh url": values.repoSshUrl,
-            },
-            e
-          );
-
-          process.exit(1);
+      await launchBlock(
+        async () => {
+          await launchCommand(`git pull`, {
+            cwd: folderPath,
+          });
+        },
+        {
+          name: "Pull repo",
+          "Folder path": folderPath,
         }
-        console.log(`Repo ${values.repoSshUrl} is cloned`);
-      }
+      );
 
-      console.log(`Pulling the repository`);
-      try {
-        await commonLib.promisifiedSpawn(`git pull`, {
-          cwd: folderPath,
-        });
-      } catch (e) {
-        console.error(`Failed to pull`);
-
-        commonLib.logErrorContext("Pull", {}, e);
-
-        process.exit(1);
-      }
       console.log(`Repo is pulled`);
-
-      console.log(`Running`);
-      try {
-        await commonLib.promisifiedSpawn(`npm run start`, {
-          cwd: folderPath,
-        });
-      } catch (e) {
-        console.error(`Failed to start`);
-
-        commonLib.logErrorContext("Start", {}, e);
-
-        process.exit(1);
-      }
-      console.log(`Process is ended`);
     },
   },
   readConfig: {
-    contextVariable: "config",
+    contextPath: "config",
+    globalContext: true,
     beforeInitilize: true,
-    name: "readConfig",
+    name: "read config",
+    describe: "Read config",
     default: true,
-    handler: async ({ safedParsedArgs }) => {
-      if (!safedParsedArgs.configPath) {
+    handler: async ({ safeArgValues }, { logErrorContext, launchBlock }) => {
+      if (!safeArgValues.configPath) {
         console.error("Config path is required");
-        commonLib.logErrorContext("Config path", {
-          "Config path": safedParsedArgs?.configPath,
+        logErrorContext("Config path", {
+          "Config path": safeArgValues.configPath,
         });
 
         process.exit(1);
       }
 
-      if (safedParsedArgs?.withoutConfig) {
+      if (safeArgValues.withoutConfig) {
         return null;
       }
 
-      const targetPath = path.resolve(__dirname, safedParsedArgs?.configPath);
+      const targetPath = path.resolve(__dirname, safeArgValues.configPath);
 
-      let initConfigContent = null;
-      try {
-        initConfigContent = fs.readFileSync(targetPath, "utf8");
-      } catch (e) {
-        console.log(`Config file ${safedParsedArgs?.configPath} is not found`);
+      const initConfigContent = await launchBlock(
+        async () => {
+          return fs.readFileSync(targetPath, "utf8");
+        },
+        async () => null,
+        {
+          name: "Read config",
+          fatal: false,
+          "Config path": safeArgValues.configPath,
+          "Resolved path for config file": targetPath,
+        }
+      );
 
-        commonLib.logErrorContext(
-          "Read config",
-          {
-            "Config path": safedParsedArgs?.configPath,
-            "Resolved path for config file": targetPath,
-          },
-          e
-        );
-
-        return null;
-      }
-
-      try {
-        return JSON.parse(initConfigContent);
-      } catch (e) {
-        console.error(`Config file ${targetPath} is not valid`);
-
-        commonLib.logErrorContext(
-          "Parse config",
-          {
-            "Parsed content": initConfigContent,
-          },
-          e
-        );
-
-        return null;
-      }
+      return await launchBlock(
+        async () => {
+          return JSON.parse(initConfigContent);
+        },
+        async () => null,
+        {
+          name: "Parse config",
+          fatal: false,
+          "Parsed content": initConfigContent,
+        }
+      );
     },
   },
   writeConfig: {
-    handler: async ({ processedOptions }) => {
-      const writeConfig = Object.entries(processedOptions)
+    contextVariable: "config",
+    name: "write config",
+    describe: "Write config",
+    default: true,
+    handler: async ({ options, values }) => {
+      const writeConfig = Object.entries(options)
         .filter(([_, option]) => option.writeToConfig)
         .reduce((acc, [id]) => {
-          acc[id] = targetVariables[id];
+          acc[id] = values[id];
 
           return acc;
         }, {});
 
-      if (!safedParsedArgs.configPath) {
+      if (!values.configPath) {
         throw new Error(`Config path is required`);
       }
 
-      const targetPath = path.resolve(__dirname, safedParsedArgs.configPath);
+      const targetPath = path.resolve(__dirname, "../", values.configPath);
 
       try {
         if (fs.existsSync(targetPath)) {
@@ -205,10 +183,10 @@ module.exports.commands = {
       } catch (e) {
         console.error(`Config file ${targetPath} is not valid`);
 
-        commonLib.logErrorContext(
+        logErrorContext(
           "Write config",
           {
-            "Config path": safedParsedArgs.configPath,
+            "Config path": values.configPath,
             "Resolved path for config file": targetPath,
           },
           e
@@ -221,3 +199,5 @@ module.exports.commands = {
     },
   },
 };
+
+module.exports.commands = commands;

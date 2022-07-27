@@ -1,0 +1,7 @@
+*
+
+!src
+!src/**/*
+!config
+!config/**/*
+!index.js
