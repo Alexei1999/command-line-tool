@@ -54,6 +54,16 @@ module.exports.core = async ({
     logErrorContext,
   };
 
+  const commonValues = {
+    options: processedOptions,
+    commands,
+    argValues: parsedArgs,
+    safeArgValues: safeParsedArgs,
+    calculatedOptions,
+    env: variables,
+    context,
+  };
+
   for (let command of Object.values(commands).filter(
     (command) => command.beforeInitilize
   )) {
@@ -66,18 +76,7 @@ module.exports.core = async ({
       parseArgsLib.hasCommand(command.command) ||
       parseArgsLib.extractPresence(parseArgsLib.getOption(command.option))
     ) {
-      const result = await command.handler(
-        {
-          options: processedOptions,
-          commands,
-          argValues: parsedArgs,
-          safeArgValues: safeParsedArgs,
-          calculatedOptions,
-          env: variables,
-          context,
-        },
-        helpers
-      );
+      const result = await command.handler(commonValues, helpers);
       contextSetter(command, context, result);
 
       if (command.exitAfterExecute) {
@@ -141,13 +140,7 @@ module.exports.core = async ({
       const result = await command.handler(
         {
           values: targetVariables,
-          parsedArgs,
-          commands,
-          options: processedOptions,
-          safeParsedArgs,
-          calculatedOptions,
-          env: variables,
-          context,
+          ...commonValues,
         },
         helpers
       );

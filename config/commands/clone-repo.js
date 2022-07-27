@@ -4,7 +4,6 @@ const fs = require("fs");
 const cloneRepoCommands = {
   "clone-repo": {
     default: true,
-    beforeInitilize: false,
     name: "clone-repo",
     describe: "Clone repo",
     handler: async (
