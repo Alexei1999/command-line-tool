@@ -8,6 +8,7 @@ module.exports.core = async ({
   commands = {},
   options = {},
   calculatedOptions = {},
+  variables = {},
 }) => {
   const processedOptions = Object.fromEntries(
     Object.entries(options).map(([key, value]) => [
@@ -51,7 +52,6 @@ module.exports.core = async ({
     ...commonLib,
     ...parseArgsLib,
     logErrorContext,
-    context,
   };
 
   for (let command of Object.values(commands).filter(
@@ -69,9 +69,12 @@ module.exports.core = async ({
       const result = await command.handler(
         {
           options: processedOptions,
+          commands,
           argValues: parsedArgs,
           safeArgValues: safeParsedArgs,
           calculatedOptions,
+          env: variables,
+          context,
         },
         helpers
       );
@@ -139,9 +142,12 @@ module.exports.core = async ({
         {
           values: targetVariables,
           parsedArgs,
+          commands,
           options: processedOptions,
           safeParsedArgs,
           calculatedOptions,
+          env: variables,
+          context,
         },
         helpers
       );
