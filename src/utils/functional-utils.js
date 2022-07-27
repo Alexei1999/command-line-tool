@@ -5,7 +5,7 @@ module.exports.logErrorContext = function (name, context, error) {
 
   console.groupCollapsed();
 
-  console.log("Name: ", name);
+  console.log("Error name: ", name);
 
   if (context) {
     Object.entries(context).forEach(([key, value]) => {

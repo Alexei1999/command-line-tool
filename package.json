@@ -10,8 +10,15 @@
     "type": "git",
     "url": "git+https://github.com/Alexei1999/command-line-tool.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "command-line",
+    "tool",
+    "cli",
+    "command",
+    "line",
+    "node"
+  ],
+  "author": "Alexei1999",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Alexei1999/command-line-tool/issues"

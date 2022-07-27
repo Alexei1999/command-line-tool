@@ -181,7 +181,7 @@ const commands = {
     name: "write config",
     describe: "Write config",
     default: true,
-    handler: async ({ options, values }) => {
+    handler: async ({ options, values }, { launchBlock }) => {
       const writeConfig = Object.entries(options)
         .filter(([_, option]) => option.writeToConfig)
         .reduce((acc, [id]) => {
@@ -196,26 +196,22 @@ const commands = {
 
       const targetPath = path.resolve(__dirname, "../", values.configPath);
 
-      try {
-        if (fs.existsSync(targetPath)) {
-          fs.unlinkSync(targetPath);
-        }
-
-        fs.writeFileSync(targetPath, JSON.stringify(writeConfig, null, 2));
-      } catch (e) {
-        console.error(`Config file ${targetPath} is not valid`);
-
-        logErrorContext(
-          "Write config",
-          {
-            "Config path": values.configPath,
-            "Resolved path for config file": targetPath,
-          },
-          e
-        );
-
-        return null;
+      if (fs.existsSync(targetPath)) {
+        fs.unlinkSync(targetPath);
       }
+
+      await launchBlock(
+        async () => {
+          fs.writeFileSync(targetPath, JSON.stringify(writeConfig, null, 2));
+        },
+        () => null,
+        {
+          name: "Write config",
+          fatal: false,
+          "Config path": values.configPath,
+          "Resolved path for config file": targetPath,
+        }
+      );
 
       console.log(`Config file ${targetPath} is created`);
     },
