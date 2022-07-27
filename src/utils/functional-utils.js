@@ -3,7 +3,7 @@ module.exports.logErrorContext = function (name, context, error) {
     throw new Error("Context name is required");
   }
 
-  console.groupCollapsed(`Error context`);
+  console.groupCollapsed();
 
   console.log("Name: ", name);
 

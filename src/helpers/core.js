@@ -71,6 +71,7 @@ module.exports.core = async ({
           options: processedOptions,
           argValues: parsedArgs,
           safeArgValues: safeParsedArgs,
+          calculatedOptions,
         },
         helpers
       );
@@ -140,6 +141,7 @@ module.exports.core = async ({
           parsedArgs,
           options: processedOptions,
           safeParsedArgs,
+          calculatedOptions,
         },
         helpers
       );
@@ -151,6 +153,6 @@ module.exports.core = async ({
     }
   }
 
-  console.log("Process finished");
+  console.log("Process completed successfully");
   return process.exit(0);
 };

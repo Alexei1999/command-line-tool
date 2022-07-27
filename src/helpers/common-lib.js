@@ -62,7 +62,17 @@ const commonLib = {
       errorName && console.error(errorName);
       name && console.error(`${name}: failed`);
 
-      name && logErrorContext(name, errorDetails, e);
+      name &&
+        logErrorContext(
+          name,
+          fatal
+            ? errorDetails
+            : {
+                fatal: false,
+                ...errorDetails,
+              },
+          e
+        );
 
       fatal && process.exit(1);
 

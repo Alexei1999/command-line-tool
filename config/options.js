@@ -1,15 +1,12 @@
 const { DEFAULT_CONSTANTS } = require("./constants.js");
 
 module.exports.options = {
-  option2: {
-    name: "option2",
-    describe: "Option 2",
-    option: "--option2",
-    alias: "-o2",
+  option1: {
+    name: "option1",
+    describe: "Option 1",
+    option: "--option1",
+    alias: "-o1",
     type: "string",
-    defaultValue: DEFAULT_CONSTANTS.TEMPLATE,
-    writeToConfig: true,
-    onlyFromConfig: true,
   },
   repoUrl: {
     name: "repoUrl",
@@ -19,6 +16,7 @@ module.exports.options = {
     type: "string",
     required: true,
     writeToConfig: true,
+    defaultValue: DEFAULT_CONSTANTS.REPO_URL,
   },
   configPath: {
     name: "configPath",
@@ -26,13 +24,11 @@ module.exports.options = {
     option: "--config-path",
     alias: "-cp",
     type: "string",
-    required: true,
-    writeToConfig: true,
     defaultValue: DEFAULT_CONSTANTS.CONFIG_PATH,
   },
 };
 
-module.exports.calculatedOptions = (definedValues) => {
+module.exports.calculatedOptions = (definedValues = {}) => {
   return {
     calcOption: Buffer.from(
       `${definedValues.option1}:${definedValues.option2}`

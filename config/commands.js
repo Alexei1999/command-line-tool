@@ -8,7 +8,7 @@ const commands = {
     describe: "Show help",
     command: "help",
     option: "--help",
-    handler: async ({ options }) => {
+    handler: async ({ options, calculatedOptions }) => {
       const optionsTable = Object.entries(options).reduce(
         (acc, [id, option]) => {
           acc[id] = {
@@ -25,7 +25,7 @@ const commands = {
         {}
       );
 
-      console.log("Options");
+      console.log("----- Options -----");
       console.table(optionsTable);
 
       const commandsTable = Object.entries(commands).reduce(
@@ -45,10 +45,32 @@ const commands = {
         {}
       );
 
-      console.log("Commands");
+      console.log("\n");
+      console.log("----- Commands -----");
       console.table(commandsTable);
 
-      console.log("Default values");
+      try {
+        const calculatedTable = Object.entries(calculatedOptions()).reduce(
+          (acc, [id, value]) => {
+            acc[id] = {
+              "value type": typeof value,
+            };
+
+            return acc;
+          },
+          {}
+        );
+
+        console.log("\n");
+        console.log("----- Calculated options -----");
+        console.table(calculatedTable);
+      } catch (error) {
+        console.error("Can't show calculated options");
+        console.error(error);
+      }
+
+      console.log("\n");
+      console.log("----- Default values  -----");
       Object.entries(options).forEach(([key, option]) => {
         if (option.defaultValue?.length > 50) {
           console.log(`--- ${key} ---`);
