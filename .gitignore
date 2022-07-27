@@ -5,4 +5,5 @@
 !config
 !config/**/*
 !index.js
-README.MD
+!README.MD
+!package*
