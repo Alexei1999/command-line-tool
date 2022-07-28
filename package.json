@@ -1,12 +1,13 @@
 {
   "name": "command-line-tool",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A command line tool for launching commands from the command line",
   "main": "index.js",
   "scripts": {
     "build": "npx webpack-cli build --mode=development",
     "build:prod": "npx webpack-cli build --mode=production",
-    "start": "node index.js"
+    "start": "node index.js",
+    "help": "node index.js --help"
   },
   "repository": {
     "type": "git",

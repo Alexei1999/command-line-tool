@@ -6,24 +6,28 @@ const configCommands = {
     contextPath: "config",
     globalContext: true,
     beforeInitilize: true,
-    name: "read config",
+    name: "read-config",
+    label: "Read config",
     describe: "Read config",
     default: true,
-    handler: async ({ safeArgValues }, { logErrorContext, launchBlock }) => {
+    handler: async (
+      { safeArgValues, env: { root } },
+      { logErrorContext, launchBlock }
+    ) => {
       if (!safeArgValues.configPath) {
         console.error("Config path is required");
         logErrorContext("Config path", {
           "Config path": safeArgValues.configPath,
         });
 
-        process.exit(1);
+        throw new Error("Config path is required");
       }
 
       if (safeArgValues.withoutConfig) {
         return null;
       }
 
-      const targetPath = path.resolve(__dirname, safeArgValues.configPath);
+      const targetPath = path.resolve(root, safeArgValues.configPath);
 
       const initConfigContent = await launchBlock(
         async () => {
@@ -31,7 +35,7 @@ const configCommands = {
         },
         async () => null,
         {
-          name: "Read config",
+          name: "Reading config",
           fatal: false,
           "Config path": safeArgValues.configPath,
           "Resolved path for config file": targetPath,
@@ -44,7 +48,7 @@ const configCommands = {
         },
         async () => null,
         {
-          name: "Parse config",
+          name: "Parsing config",
           fatal: false,
           "Parsed content": initConfigContent,
         }
@@ -53,7 +57,7 @@ const configCommands = {
   },
   writeConfig: {
     contextVariable: "config",
-    name: "write config",
+    name: "write-config",
     describe: "Write config",
     default: true,
     handler: async ({ options, values, env: { root } }, { launchBlock }) => {
@@ -81,7 +85,7 @@ const configCommands = {
         },
         () => null,
         {
-          name: "Write config",
+          name: "Writing config",
           fatal: false,
           "Config path": values.configPath,
           "Resolved path for config file": targetPath,

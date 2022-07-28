@@ -3,9 +3,9 @@ module.exports.logErrorContext = function (name, context, error) {
     throw new Error("Context name is required");
   }
 
-  console.groupCollapsed();
+  console.group();
 
-  console.log("Error name: ", name);
+  console.error("Error name: ", name);
 
   if (context) {
     Object.entries(context).forEach(([key, value]) => {

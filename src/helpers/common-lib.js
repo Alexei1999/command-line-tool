@@ -1,16 +1,13 @@
-const { USE_SPAWN } = require("../config");
-
-const { parseArgsLib } = require("./parse-args-lib.js");
 const { logErrorContext } = require("../utils/functional-utils");
 
 const { pipeLine } = require("../utils/functional-utils");
-const { promisifiedSpawn, promisifiedExec } = require("../utils/cmd-utils");
+
+const { parseArgsLib } = require("./parse-args-lib");
 
 const commonLib = {
-  launchCommand: USE_SPAWN ? promisifiedSpawn : promisifiedExec,
   parseFileTemplate(template, args) {
     if (!template) {
-      throw new Error(`Config file template is not defined: ${template}`);
+      throw new Error(`Template file is not defined: ${template}`);
     }
 
     let modifiedTemplate = template;
@@ -57,7 +54,10 @@ const commonLib = {
 
     name && console.log(name);
     try {
-      return await callback();
+      const result = await callback();
+
+      name && console.log(`${name}: finished`);
+      return result;
     } catch (e) {
       errorName && console.error(errorName);
       name && console.error(`${name}: failed`);
@@ -74,13 +74,14 @@ const commonLib = {
           e
         );
 
-      fatal && process.exit(1);
+      if (fatal) {
+        throw e;
+      }
 
       if (typeof errorCallbackOrConfig === "function") {
         return await errorCallbackOrConfig();
       }
     }
-    name && console.log(`${name}: finished`);
   },
 };
 

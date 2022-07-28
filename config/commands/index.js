@@ -1,11 +1,13 @@
-const { cloneRepoCommands } = require("./clone-repo");
+const { runRepoCommands } = require("./run-repo");
 const { commonCommands } = require("./common");
 const { configCommands } = require("./config");
+const { removeCommands } = require("./remove");
 
 const commands = {
-  ...cloneRepoCommands,
   ...commonCommands,
+  ...runRepoCommands,
   ...configCommands,
+  ...removeCommands,
 };
 
 module.exports.commands = commands;

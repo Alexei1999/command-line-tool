@@ -1,6 +1,6 @@
 const args = process.argv.slice(2);
 
-module.exports.parseArgsLib = {
+const parseArgsLib = {
   extractValue(config) {
     if (!config) {
       throw new Error(`Config ${config} is required`);
@@ -62,3 +62,5 @@ module.exports.parseArgsLib = {
     };
   },
 };
+
+module.exports.parseArgsLib = parseArgsLib;

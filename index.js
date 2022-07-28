@@ -5,9 +5,14 @@ const { commands } = require("./config/commands/index");
 
 const { commandLineTool } = require("./src/index");
 
-commandLineTool({
-  commands,
-  options,
-  calculatedOptions,
-  variables,
-});
+commandLineTool(
+  {
+    commands,
+    options,
+    calculatedOptions,
+    variables,
+  },
+  {
+    useSpawn: false,
+  }
+);

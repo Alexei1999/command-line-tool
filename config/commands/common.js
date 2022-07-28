@@ -2,6 +2,7 @@ const commonCommands = {
   help: {
     beforeInitilize: true,
     name: "help",
+    label: "Help",
     describe: "Show help",
     command: "help",
     option: "--help",
@@ -30,7 +31,7 @@ const commonCommands = {
         (acc, [id, option]) => {
           acc[id] = {
             ...((option.command || option.option) && {
-              command: `${option.command}${
+              command: `${option.command.join?.(", ") || option.command}${
                 option.option ? `, ${option.option}` : ""
               }`,
             }),
