@@ -16,19 +16,13 @@ const { setValueByPath } = require("../utils/functional-utils");
  * @param {Object} options.variables - Variables object.
  *
  * @param {Object} configs - Config object.
- * @param {Boolean} configs.useSpawn - Use spawn or exec for executing commands. The difference is that spawn prints the output live, but throws an non-readable error.
  */
-module.exports.core = async (
-  {
-    commands = {},
-    options = {},
-    calculatedOptions = () => ({}),
-    variables = {},
-  } = {},
-  configs = {
-    useSpawn: true,
-  }
-) => {
+module.exports.core = async ({
+  commands = {},
+  options = {},
+  calculatedOptions = () => ({}),
+  variables = {},
+} = {}) => {
   try {
     const processedOptions = Object.fromEntries(
       Object.entries(options).map(([key, value]) => [
@@ -150,7 +144,7 @@ module.exports.core = async (
       ...parseArgsLib,
       logErrorContext,
       setContextValue: (path, value) => setValueByPath(path, context, value),
-      ...getConfigurableLib({ useSpawn: configs.useSpawn }),
+      ...getConfigurableLib({}, safeParsedArgs),
     };
 
     const commonValues = {

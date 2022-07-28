@@ -23,7 +23,6 @@ _auth=<npmrcToken>`,
 
 module.exports.options = {
   branch: {
-    _params: ["--branch", "-b"],
     name: "branch",
     describe: "Branch name",
     option: "--branch",
@@ -42,7 +41,7 @@ module.exports.options = {
     defaultValue: DEFAULT_CONSTANTS.REPO_URL,
   },
   configPath: {
-    name: "configPath",
+    name: "config-path",
     describe: "Config path",
     option: "--config-path",
     alias: "-cp",
@@ -50,7 +49,6 @@ module.exports.options = {
     defaultValue: DEFAULT_CONSTANTS.CONFIG_PATH,
   },
   configFileName: {
-    _params: ["--config-file-name", "-fn"],
     name: "config-file-name",
     describe: "Config file name",
     option: "--config-file-name",
@@ -60,7 +58,6 @@ module.exports.options = {
     writeToConfig: false,
   },
   nexusLogin: {
-    _params: ["--nexus-login", "-nl"],
     name: "nexus-login",
     describe: "Nexus login",
     option: "--nexus-login",
@@ -69,7 +66,6 @@ module.exports.options = {
     writeToConfig: true,
   },
   nexusPassword: {
-    _params: ["--nexus-password", "-np"],
     name: "nexus-password",
     describe: "Nexus password",
     option: "--nexus-password",
@@ -106,6 +102,14 @@ module.exports.options = {
     alias: "-pu",
     type: "string",
     writeToConfig: true,
+  },
+  useExec: {
+    name: "use-exec",
+    describe:
+      "Use spawn or exec for executing commands. The difference is that spawn prints the output live, but throws an non-readable error.",
+    option: "--use-exec",
+    alias: "-ue",
+    type: "boolean",
   },
 };
 

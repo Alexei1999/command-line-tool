@@ -11,8 +11,5 @@ commandLineTool(
     options,
     calculatedOptions,
     variables,
-  },
-  {
-    useSpawn: false,
   }
 );
