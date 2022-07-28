@@ -142,7 +142,7 @@ const runRepoCommands = {
     ) => {
       await launchBlock(
         async () => {
-          await launchCommand(`npm install`, {
+          await launchCommand(`npm install --legacy-peer-deps`, {
             cwd: path,
           });
         },
