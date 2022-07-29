@@ -1,7 +1,5 @@
 const { setValueByPath } = require("./functional-utils");
 
-const { parseArgsLib } = require("../helpers/parse-args-lib.js");
-
 const contextSetter = function contextSetter(command, context, data) {
   if (!command?.contextPath) {
     return;
@@ -28,9 +26,10 @@ const processCommand = async function launchCommand(
   command,
   context,
   values,
-  helpers
+  helpers,
+  options = {}
 ) {
-  const result = await command.handler(values, helpers).catch((e) => {
+  const result = await command.handler(values, helpers, options).catch((e) => {
     if (command.skipError) {
       return;
     }

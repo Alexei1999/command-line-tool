@@ -7,7 +7,10 @@ const helpCommands = {
     command: "man",
     allowedCommands: [],
     exitAfterExecute: true,
-    handler: async ({ processedCommands, processedOptions }, { getOption }) => {
+    handler: async (
+      { commands: _commands, options: _options },
+      { getOption }
+    ) => {
       const { notFound, emptyValue, value } = getOption("man", {
         anyValue: true,
       });
@@ -23,7 +26,7 @@ const helpCommands = {
       console.log(`----- ${value} -----`);
       console.log("\n");
 
-      const commands = Object.values(processedCommands).filter(
+      const commands = Object.values(_commands).filter(
         (command) =>
           value === command.id ||
           value === command.command ||
@@ -56,7 +59,7 @@ const helpCommands = {
 
       console.log("\n");
 
-      const options = Object.entries(processedOptions).filter(
+      const options = Object.entries(_options).filter(
         (option) =>
           value === option.option ||
           value === option.alias ||

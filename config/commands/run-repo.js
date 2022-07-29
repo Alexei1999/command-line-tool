@@ -72,7 +72,7 @@ const runRepoCommands = {
     handler: async (
       {
         values,
-        context: {
+        ctx: {
           [runRepoCommands.downloadRepo.name]: { path: repoPath },
         },
       },
@@ -133,7 +133,7 @@ const runRepoCommands = {
     ],
     handler: async (
       {
-        context: {
+        ctx: {
           [runRepoCommands.downloadRepo.name]: { path },
         },
       },
