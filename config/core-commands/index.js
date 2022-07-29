@@ -2,7 +2,7 @@ const coreCommands = {
   init: {
     description: "Run initialization commands.",
     core: true,
-    handler: async (
+    handle: async (
       commonValues,
       helpers,
       { processCommand, checkNotEnoughOptions }
@@ -25,7 +25,7 @@ const coreCommands = {
   main: {
     description: "Run main commands.",
     core: true,
-    handler: async (
+    handle: async (
       commonValues,
       helpers,
       { processCommand, checkNotEnoughOptions }

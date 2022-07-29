@@ -29,7 +29,7 @@ const processCommand = async function launchCommand(
   helpers,
   options = {}
 ) {
-  const result = await command.handler(values, helpers, options).catch((e) => {
+  const result = await command.handle(values, helpers, options).catch((e) => {
     if (command.skipError) {
       return;
     }

@@ -7,7 +7,7 @@ const helpCommands = {
     command: "man",
     allowedCommands: [],
     exitAfterExecute: true,
-    handler: async (
+    handle: async (
       { commands: _commands, options: _options },
       { getOption }
     ) => {
@@ -39,7 +39,7 @@ const helpCommands = {
         console.log(`--- commands ---`);
 
         commands.forEach((command) => {
-          const { name, description, handler, ...rest } = command;
+          const { name, description, handle, ...rest } = command;
           Object.entries({
             name,
             description,
@@ -47,7 +47,7 @@ const helpCommands = {
             console.log(`${value}`);
           });
           Object.entries({
-            handler: Boolean(handler),
+            handle: Boolean(handle),
             ...rest,
           }).forEach(([key, value]) => {
             console.log(`${key}: ${value}`);
@@ -100,7 +100,7 @@ const helpCommands = {
     command: "help",
     option: "--help",
     exitAfterExecute: true,
-    handler: async ({ options, commands, calculatedOptions, env }) => {
+    handle: async ({ options, commands, calculatedOptions, env }) => {
       const optionsTable = Object.entries(options).reduce(
         (acc, [id, option]) => {
           acc[id] = {

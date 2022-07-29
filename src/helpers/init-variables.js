@@ -4,6 +4,8 @@ const { getConfigurableLib } = require("../helpers/configurable-lib.js");
 const { logErrorContext } = require("../utils/functional-utils.js");
 const { processCommand } = require("../utils/context-utils.js");
 
+const { expandCommands } = require("../utils/expand-commands.js");
+
 const initVariables = ({
   commands = {},
   options = {},
@@ -25,7 +27,7 @@ const initVariables = ({
   );
 
   const processedCommands = Object.fromEntries(
-    Object.entries(commands).map(([key, value]) => [
+    Object.entries(expandCommands(commands)).map(([key, value]) => [
       key,
       {
         ...value,

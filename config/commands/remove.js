@@ -11,7 +11,7 @@ const removeCommands = {
     allowedCommands: [],
     requiredOptions: [options.repoUrl.name],
     command: ["remove", "remove-config", "rc"],
-    handler: async ({ safeArgValues, env: { root } }, { launchBlock }) => {
+    handle: async ({ safeArgValues, env: { root } }, { launchBlock }) => {
       const targetPath = path.resolve(root, safeArgValues.configPath);
 
       await launchBlock(
@@ -34,7 +34,7 @@ const removeCommands = {
     allowedCommands: [],
     requiredOptions: [options.repoUrl.name],
     command: ["remove", "remove-repo", "rr"],
-    handler: async ({ values, env: { root } }, { launchBlock }) => {
+    handle: async ({ values, env: { root } }, { launchBlock }) => {
       const folderName = values.repoUrl.split("/").pop().replace(".git", "");
       const folderPath = path.resolve(root, folderName);
 

@@ -10,7 +10,7 @@ const configCommands = {
     label: "Read config",
     description: "Read config",
     default: true,
-    handler: async (
+    handle: async (
       { safeArgValues, env: { root } },
       { logErrorContext, launchBlock }
     ) => {
@@ -60,7 +60,7 @@ const configCommands = {
     name: "write-config",
     description: "Write config",
     default: true,
-    handler: async ({ options, values, env: { root } }, { launchBlock }) => {
+    handle: async ({ options, values, env: { root } }, { launchBlock }) => {
       const writeConfig = Object.entries(options)
         .filter(([_, option]) => option.writeToConfig)
         .reduce((acc, [id]) => {

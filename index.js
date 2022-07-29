@@ -2,7 +2,8 @@ const { options } = require("./config/options");
 const { variables } = require("./config/variables");
 const { calculatedOptions } = require("./config/options");
 const { commands } = require("./config/commands/index");
-const { coreCommands } = require("./config/commands/core-commands");
+
+const { coreCommands } = require("./config/core-commands/index");
 
 const { commandLineTool } = require("./src/index");
 
