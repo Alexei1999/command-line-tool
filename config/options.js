@@ -24,7 +24,7 @@ _auth=<npmrcToken>`,
 module.exports.options = {
   branch: {
     name: "branch",
-    describe: "Branch name",
+    description: "Branch name",
     option: "--branch",
     alias: "-b",
     type: "string",
@@ -33,7 +33,7 @@ module.exports.options = {
   },
   repoUrl: {
     name: "repoUrl",
-    describe: "Repo URL",
+    description: "Repo URL",
     option: "--repo-url",
     alias: "-ru",
     type: "string",
@@ -42,7 +42,7 @@ module.exports.options = {
   },
   configPath: {
     name: "config-path",
-    describe: "Config path",
+    description: "Config path",
     option: "--config-path",
     alias: "-cp",
     type: "string",
@@ -50,7 +50,7 @@ module.exports.options = {
   },
   configFileName: {
     name: "config-file-name",
-    describe: "Config file name",
+    description: "Config file name",
     option: "--config-file-name",
     alias: "-cf",
     type: "string",
@@ -59,7 +59,7 @@ module.exports.options = {
   },
   nexusLogin: {
     name: "nexus-login",
-    describe: "Nexus login",
+    description: "Nexus login",
     option: "--nexus-login",
     alias: "-nl",
     type: "string",
@@ -67,7 +67,7 @@ module.exports.options = {
   },
   nexusPassword: {
     name: "nexus-password",
-    describe: "Nexus password",
+    description: "Nexus password",
     option: "--nexus-password",
     alias: "-np",
     type: "string",
@@ -76,20 +76,20 @@ module.exports.options = {
   configFileTemplate: {
     onlyFromConfig: true,
     name: "config-file-template",
-    describe: "Config file template",
+    description: "Config file template",
     type: "string",
     defaultValue: DEFAULT_CONSTANTS.CONFIG_FILE_TEMPLATE,
   },
   npmrcTemplate: {
     onlyFromConfig: true,
     name: "npmrc-template",
-    describe: ".npmrc template",
+    description: ".npmrc template",
     type: "string",
     defaultValue: DEFAULT_CONSTANTS.NPMRC_TEMPLATE,
   },
   token: {
     name: "token",
-    describe: "Token",
+    description: "Token",
     option: "--token",
     alias: "-t",
     type: "string",
@@ -97,7 +97,7 @@ module.exports.options = {
   },
   proxyUrl: {
     name: "proxy-url",
-    describe: "Proxy url",
+    description: "Proxy url",
     option: "--proxy-url",
     alias: "-pu",
     type: "string",
@@ -105,7 +105,8 @@ module.exports.options = {
   },
   useExec: {
     name: "use-exec",
-    describe:
+    description: "Use exec",
+    fullDescription:
       "Use spawn or exec for executing commands. The difference is that spawn prints the output live, but throws an non-readable error.",
     option: "--use-exec",
     alias: "-ue",

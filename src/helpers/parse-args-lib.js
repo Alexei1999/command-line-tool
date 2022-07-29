@@ -26,7 +26,7 @@ const parseArgsLib = {
 
     return args.includes(targetCommand);
   },
-  getOption(inputArgsOrArg, defaultValue) {
+  getOption(inputArgsOrArg, { defaultValue, anyValue = false } = {}) {
     if (!inputArgsOrArg) {
       throw new Error(`Argument ${inputArgsOrArg} is required`);
     }
@@ -46,7 +46,9 @@ const parseArgsLib = {
 
     const isArgumentNotFound = index === -1;
     const isValueNotFound =
-      index === -1 || !args[index + 1] || args[index + 1].startsWith("-");
+      index === -1 ||
+      !args[index + 1] ||
+      (!anyValue && args[index + 1].startsWith("-"));
     const isUsedDefaultValue = isValueNotFound && defaultValue;
     const value = isUsedDefaultValue
       ? defaultValue

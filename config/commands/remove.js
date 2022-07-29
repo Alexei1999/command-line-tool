@@ -7,7 +7,7 @@ const removeCommands = {
   removeConfig: {
     name: "remove-config",
     label: "Remove config",
-    describe: "Remove config",
+    description: "Remove config",
     allowedCommands: [],
     requiredOptions: [options.repoUrl.name],
     command: ["remove", "remove-config", "rc"],
@@ -30,7 +30,7 @@ const removeCommands = {
   removeRepo: {
     name: "remove-repo",
     label: "Remove repo",
-    describe: "Remove repo",
+    description: "Remove repo",
     allowedCommands: [],
     requiredOptions: [options.repoUrl.name],
     command: ["remove", "remove-repo", "rr"],

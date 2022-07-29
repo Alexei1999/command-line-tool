@@ -8,7 +8,7 @@ const configCommands = {
     beforeInitilize: true,
     name: "read-config",
     label: "Read config",
-    describe: "Read config",
+    description: "Read config",
     default: true,
     handler: async (
       { safeArgValues, env: { root } },
@@ -58,7 +58,7 @@ const configCommands = {
   writeConfig: {
     contextVariable: "config",
     name: "write-config",
-    describe: "Write config",
+    description: "Write config",
     default: true,
     handler: async ({ options, values, env: { root } }, { launchBlock }) => {
       const writeConfig = Object.entries(options)

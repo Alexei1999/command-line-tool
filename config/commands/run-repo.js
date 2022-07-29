@@ -8,7 +8,7 @@ const runRepoCommands = {
     default: true,
     name: "download-repo",
     label: "Download repo",
-    describe: "Download repo",
+    description: "Download repo",
     requiredOptions: [options.repoUrl.name],
     contextPath: "path",
     handler: async (
@@ -16,7 +16,6 @@ const runRepoCommands = {
       { launchCommand, launchBlock }
     ) => {
       const folderName = values.repoUrl.split("/").pop().replace(".git", "");
-
       const folderPath = path.resolve(root, folderName);
 
       if (fs.existsSync(folderPath)) {
@@ -69,7 +68,7 @@ const runRepoCommands = {
     default: true,
     name: "rewrite-files",
     label: "Rewrite files",
-    describe: "Rewrite files",
+    description: "Rewrite files",
     handler: async (
       {
         values,
@@ -125,7 +124,7 @@ const runRepoCommands = {
   runProject: {
     default: true,
     name: "run-project",
-    describe: "Run project",
+    description: "Run project",
     requiredOptions: [
       options.nexusLogin.name,
       options.nexusPassword.name,

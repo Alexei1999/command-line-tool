@@ -39,40 +39,42 @@ module.exports.core = async ({
     );
 
     const processedCommands = Object.fromEntries(
-      Object.entries(commands)
-        .filter(([_, command]) => {
-          if (!command.default && !command.command && !command.option) {
-            throw new Error(`Command ${command.name} has no command or option`);
-          }
-
-          return (
-            command.default ||
-            (command.command && Array.isArray(command.command)
-              ? command.command.some(parseArgsLib.hasCommand)
-              : parseArgsLib.hasCommand(command.command)) ||
-            (command.option &&
-              parseArgsLib.extractPresence(
-                parseArgsLib.getOption(command.option)
-              ))
-          );
-        })
-        .map(([key, value]) => [
-          key,
-          {
-            ...value,
-            id: key,
-          },
-        ])
+      Object.entries(commands).map(([key, value]) => [
+        key,
+        {
+          ...value,
+          id: key,
+        },
+      ])
     );
 
-    const nonAlternateCommand = Object.values(processedCommands).find(
+    const filteredCommands = Object.fromEntries(
+      Object.entries(processedCommands).filter(([_, command]) => {
+        if (!command.default && !command.command && !command.option) {
+          throw new Error(`Command ${command.name} has no command or option`);
+        }
+
+        return (
+          command.default ||
+          (command.command && Array.isArray(command.command)
+            ? command.command.some(parseArgsLib.hasCommand)
+            : parseArgsLib.hasCommand(command.command)) ||
+          (command.option &&
+            parseArgsLib.extractPresence(
+              parseArgsLib.getOption(command.option)
+            ))
+        );
+      })
+    );
+
+    const nonAlternateCommand = Object.values(filteredCommands).find(
       (command) => Array.isArray(command.allowedCommands)
     );
 
     const targetCommands =
       nonAlternateCommand && Array.isArray(nonAlternateCommand.allowedCommands)
         ? Object.fromEntries(
-            Object.entries(processedCommands).filter(([_, command]) => {
+            Object.entries(filteredCommands).filter(([_, command]) => {
               if (
                 nonAlternateCommand.allowedCommands.includes(command.id) ||
                 nonAlternateCommand.allowedCommands.includes(command.name)
@@ -113,7 +115,7 @@ module.exports.core = async ({
               return false;
             })
           )
-        : processedCommands;
+        : filteredCommands;
 
     const parsedArgs = Object.fromEntries(
       Object.entries(processedOptions)
@@ -149,7 +151,9 @@ module.exports.core = async ({
 
     const commonValues = {
       options,
+      processedOptions,
       commands,
+      processedCommands,
       targetCommands,
       argValues: parsedArgs,
       safeArgValues: safeParsedArgs,
