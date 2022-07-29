@@ -1,13 +1,13 @@
-const { runRepoCommands } = require("./run-repo");
-const { helpCommands } = require("./help");
-const { configCommands } = require("./config");
-const { removeCommands } = require("./remove");
+const { deployRepos } = require("./deployRepos/index");
+const { help } = require("./help/index");
+const { config } = require("./config/index");
+const { remove } = require("./remove/index");
 
 const commands = {
-  ...helpCommands,
-  ...runRepoCommands,
-  ...configCommands,
-  ...removeCommands,
+  ...help,
+  ...deployRepos,
+  ...config,
+  ...remove,
 };
 
 module.exports.commands = commands;

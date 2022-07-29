@@ -27,7 +27,7 @@ const initVariables = ({
   );
 
   const processedCommands = Object.fromEntries(
-    Object.entries(expandCommands(commands)).map(([key, value]) => [
+    Object.entries(commands).map(([key, value]) => [
       key,
       {
         ...value,
@@ -37,7 +37,7 @@ const initVariables = ({
   );
 
   const filteredCommands = Object.fromEntries(
-    Object.entries(processedCommands).filter(([_, command]) => {
+    Object.entries(expandCommands(processedCommands)).filter(([_, command]) => {
       if (!command.default && !command.command && !command.option) {
         throw new Error(`Command ${command.name} has no command or option`);
       }

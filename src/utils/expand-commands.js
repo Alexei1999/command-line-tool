@@ -10,9 +10,25 @@ const expandCommands = (commands, parents = [], root = true) => {
       return;
     }
 
-    const addedSubCommands = Object.entries(command.handle).map(
-      ([subId, subCommand]) => [subId, { ...command, ...subCommand }]
-    );
+    const entries = Object.entries(command.handle);
+    const names = entries.map(([_, command]) => command.name);
+
+    const addedSubCommands = entries.map(([subId, subCommand]) => {
+      const nextCommands = [
+        ...(command.allowedCommands || []),
+        ...(subCommand.allowedCommands || []),
+        ...names,
+      ];
+
+      return [
+        subId,
+        {
+          ...command,
+          ...subCommand,
+          allowedCommands: nextCommands,
+        },
+      ];
+    });
 
     const items = expandCommands(addedSubCommands, [...parents, id], false);
 
