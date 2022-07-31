@@ -4,7 +4,7 @@ const init = {
   handle: async (
     commonValues,
     helpers,
-    { processCommand, checkNotEnoughOptions }
+    { launchCommands, checkNotEnoughOptions }
   ) => {
     const { targetCommands, ctx: context, safeArgValues } = commonValues;
 
@@ -16,9 +16,7 @@ const init = {
       return process.exit(1);
     }
 
-    for (let command of beforeInitCommands) {
-      await processCommand(command, context, commonValues, helpers);
-    }
+    await launchCommands(beforeInitCommands, context, commonValues, helpers);
   },
 };
 

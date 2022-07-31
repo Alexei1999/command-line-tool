@@ -22,31 +22,78 @@ const contextSetter = function contextSetter(command, context, data) {
   );
 };
 
-const processCommand = async function launchCommand(
+const launchCommand = async function launchCommand(
   command,
   context,
   values,
   helpers,
+  promisesStack,
   options = {}
 ) {
-  const result = await command.handle(values, helpers, options).catch((e) => {
-    if (command.skipError) {
+  if (typeof command.filter === "function") {
+    const result = await command.filter(values, helpers, options);
+
+    if (!result) {
       return;
     }
-
-    throw e;
-  });
-
-  console.log(`${command.label} is done`);
-
-  contextSetter(command, context, result);
-
-  if (command.exitAfterExecute) {
-    return process.exit(0);
   }
+
+  const handler = command
+    .handle(context, values, helpers, options)
+    .catch((e) => {
+      if (command.skipError) {
+        return;
+      }
+
+      throw e;
+    });
+
+  function handleResult(result) {
+    console.log(`${command.label || command.name || command.id}: done`);
+
+    contextSetter(command, context, result);
+
+    if (command.exitAfterExecute) {
+      return process.exit(0);
+    }
+  }
+
+  if (command.runAsync) {
+    promisesStack.push(
+      handler(context, values, helpers, options).then(handleResult)
+    );
+
+    return;
+  }
+
+  handleResult(await command.handle(values, helpers, options));
+};
+
+const launchCommands = async function launchCommands(
+  commands,
+  context,
+  values,
+  helpers,
+  options
+) {
+  const promisesStack = [];
+
+  for (let command of Object.values(commands)) {
+    await launchCommand(
+      command,
+      context,
+      values,
+      helpers,
+      promisesStack,
+      options
+    );
+  }
+
+  await Promise.all(promisesStack);
 };
 
 module.exports = {
   contextSetter,
-  processCommand,
+  launchCommand,
+  launchCommands,
 };

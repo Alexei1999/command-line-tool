@@ -4,7 +4,7 @@ const main = {
   handle: async (
     commonValues,
     helpers,
-    { processCommand, checkNotEnoughOptions }
+    { launchCommands, checkNotEnoughOptions }
   ) => {
     const {
       targetCommands,
@@ -44,9 +44,7 @@ const main = {
       return process.exit(1);
     }
 
-    for (let command of mainCommands) {
-      await processCommand(command, context, targetValues, helpers);
-    }
+    await launchCommands(mainCommands, context, targetValues, helpers);
   },
 };
 

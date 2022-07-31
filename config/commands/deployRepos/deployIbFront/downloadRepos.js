@@ -3,10 +3,10 @@ const fs = require("fs");
 
 const { options } = require("./options/index");
 
-const downloadRepo = {
+const downloadRepos = {
   requiredOptions: [options.repoUrl.name],
   contextPath: "path",
-  name: "download-repo",
+  name: "download-repos",
   handle: async ({ values, env: { root } }, { execCommand, launchBlock }) => {
     const folderName = values.repoUrl.split("/").pop().replace(".git", "");
     const folderPath = path.resolve(root, folderName);
@@ -58,4 +58,4 @@ const downloadRepo = {
   },
 };
 
-module.exports.downloadRepo = downloadRepo;
+module.exports.downloadRepos = downloadRepos;

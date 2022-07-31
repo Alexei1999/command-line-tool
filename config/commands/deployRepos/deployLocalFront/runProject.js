@@ -1,4 +1,4 @@
-const { options } = require("../../../options");
+const { options } = require("./options/index");
 
 const { downloadRepo } = require("./downloadRepo");
 
@@ -16,11 +16,11 @@ const runProject = {
         [downloadRepo.name]: { path },
       },
     },
-    { launchCommand, launchBlock }
+    { execCommand, launchBlock }
   ) => {
     await launchBlock(
       async () => {
-        await launchCommand(`npm install --legacy-peer-deps`, {
+        await execCommand(`npm install --legacy-peer-deps`, {
           cwd: path,
         });
       },
@@ -32,7 +32,7 @@ const runProject = {
 
     await launchBlock(
       async () => {
-        await launchCommand(`npm run start:dev`, {
+        await execCommand(`npm run start:dev`, {
           cwd: path,
         });
       },

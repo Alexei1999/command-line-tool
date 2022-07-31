@@ -12,7 +12,7 @@ const man = {
     });
 
     if (notFound) {
-      throw new Error(`Command man is not found`);
+      throw new Error("Value for command not found");
     }
 
     if (emptyValue) {

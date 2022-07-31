@@ -8,7 +8,6 @@ const removeConfig = {
   label: "Remove config",
   description: "Remove config",
   allowedCommands: [],
-  requiredOptions: [options.repoUrl.name],
   command: ["remove", "remove-config", "rc"],
   handle: async ({ safeArgValues, env: { root } }, { launchBlock }) => {
     const targetPath = path.resolve(root, safeArgValues.configPath);

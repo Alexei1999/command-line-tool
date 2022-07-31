@@ -19,12 +19,16 @@ const parseArgsLib = {
 
     return !notFound;
   },
-  hasCommand(targetCommand) {
-    if (!targetCommand) {
-      throw new Error(`Command ${targetCommand} is required`);
+  hasCommand(targetCommandOrCommands) {
+    if (!targetCommandOrCommands) {
+      throw new Error(`Command ${targetCommandOrCommands} is required`);
     }
 
-    return args.includes(targetCommand);
+    if (Array.isArray(targetCommandOrCommands)) {
+      return targetCommandOrCommands.some((command) => args.includes(command));
+    }
+
+    return args.includes(targetCommandOrCommands);
   },
   getOption(inputArgsOrArg, { defaultValue, anyValue = false } = {}) {
     if (!inputArgsOrArg) {

@@ -1,15 +1,26 @@
 const path = require("path");
 const fs = require("fs");
 
-const { options } = require("../../options");
+const { options } = require("./options/index");
 
-const removeRepo = {
-  name: "remove-repo",
-  label: "Remove repo",
-  description: "Remove repo",
+const removeRepos = {
+  name: "remove-repos",
+  label: "Remove repos",
+  description: "Remove repos",
   allowedCommands: [],
   requiredOptions: [options.repoUrl.name],
-  command: ["remove", "remove-repo", "rr"],
+  command: ["remove", "remove-repos", "rr"],
+  exitAfterExecute: true,
+  filter: async ({ values }, { hasCommand }) => {
+    if (values.removeRepos) {
+      return true;
+    }
+    if (hasCommand(removeRepos.command)) {
+      return true;
+    }
+
+    return false;
+  },
   handle: async ({ values, env: { root } }, { launchBlock }) => {
     const folderName = values.repoUrl.split("/").pop().replace(".git", "");
     const folderPath = path.resolve(root, folderName);
@@ -21,10 +32,10 @@ const removeRepo = {
       {
         fatal: false,
         name: "Unlink repo",
-        "Folder path": path,
+        "Folder path": folderPath,
       }
     );
   },
 };
 
-module.exports.removeRepo = removeRepo;
+module.exports.removeRepos = removeRepos;

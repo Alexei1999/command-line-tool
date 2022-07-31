@@ -2,29 +2,17 @@ const { parseArgsLib } = require("../helpers/parse-args-lib.js");
 const { commonLib } = require("../helpers/common-lib.js");
 const { getConfigurableLib } = require("../helpers/configurable-lib.js");
 const { logErrorContext } = require("../utils/functional-utils.js");
-const { processCommand } = require("../utils/context-utils.js");
+const { launchCommand, launchCommands } = require("../utils/context-utils.js");
 
 const { expandCommands } = require("../utils/expand-commands.js");
 
 const initVariables = ({
   commands = {},
-  options = {},
-  calculatedOptions = () => ({}),
+  options: commonOptions = {},
+  calculatedOptions: commonCalculatedOptions = () => ({}),
   variables = {},
 }) => {
-  const processedOptions = Object.fromEntries(
-    Object.entries(options).map(([key, value]) => [
-      key,
-      {
-        ...value,
-        id: key,
-        _params:
-          value.option && value.alias
-            ? [value.option, value.alias]
-            : value.option || value.alias,
-      },
-    ])
-  );
+  const context = {};
 
   const processedCommands = Object.fromEntries(
     Object.entries(commands).map(([key, value]) => [
@@ -52,6 +40,8 @@ const initVariables = ({
       );
     })
   );
+
+  console.log(filteredCommands);
 
   const nonAlternateCommand = Object.values(filteredCommands).find((command) =>
     Array.isArray(command.allowedCommands)
@@ -103,14 +93,47 @@ const initVariables = ({
         )
       : filteredCommands;
 
-  const targetOptions = Object.fromEntries(
-    Object.entries(processedOptions).filter(([_, option]) => {
-      return (
-        option.option &&
-        parseArgsLib.extractPresence(parseArgsLib.getOption(option._params))
-      );
-    })
+  const bundledOptions = {
+    ...commonOptions,
+    ...Object.values(targetCommands).reduce((acc, command) => {
+      if (command.options) {
+        return {
+          ...acc,
+          ...command.options,
+        };
+      }
+
+      return acc;
+    }, {}),
+  };
+
+  const processedOptions = Object.fromEntries(
+    Object.entries(bundledOptions).map(([key, value]) => [
+      key,
+      {
+        ...value,
+        id: key,
+        _params:
+          value.option && value.alias
+            ? [value.option, value.alias]
+            : value.option || value.alias,
+      },
+    ])
   );
+
+  const calculatedOptions = (values) => ({
+    ...commonCalculatedOptions(values),
+    ...Object.values(targetCommands).reduce((acc, command) => {
+      if (command.calculatedOptions) {
+        return {
+          ...acc,
+          ...command.calculatedOptions(values),
+        };
+      }
+
+      return acc;
+    }),
+  });
 
   const parsedArgs = Object.fromEntries(
     Object.entries(processedOptions)
@@ -133,8 +156,6 @@ const initVariables = ({
       return [id, value || processedOptions[id].defaultValue];
     })
   );
-
-  const context = {};
 
   const checkNotEnoughOptions = (commands, variables) => {
     const requiredOptions = commands
@@ -180,7 +201,6 @@ const initVariables = ({
 
   const commonValues = {
     options: processedOptions,
-    targetOptions,
     calculatedOptions,
     commands: processedCommands,
     targetCommands,
@@ -192,7 +212,8 @@ const initVariables = ({
 
   const commanderHelpers = {
     checkNotEnoughOptions,
-    processCommand,
+    launchCommand,
+    launchCommands,
   };
 
   return {

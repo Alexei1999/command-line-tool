@@ -1,6 +1,6 @@
 const { initVariables } = require("../helpers/init-variables.js");
 
-const { processCommand } = require("../utils/context-utils");
+const { launchCommands } = require("../utils/context-utils");
 
 /**
  * Parse command line arguments and run the commands.
@@ -28,15 +28,23 @@ module.exports.core = async ({
       variables,
     });
 
-    for (let command of Object.values(coreCommands)) {
-      await processCommand(
-        command,
-        context,
-        commonValues,
-        helpers,
-        commanderHelpers
-      );
-    }
+    const processedCoreCommands = Object.fromEntries(
+      Object.entries(coreCommands).map(([key, value]) => [
+        key,
+        {
+          ...value,
+          id: key,
+        },
+      ])
+    );
+
+    await launchCommands(
+      processedCoreCommands,
+      context,
+      commonValues,
+      helpers,
+      commanderHelpers
+    );
 
     console.log("Process completed successfully");
     return process.exit(0);

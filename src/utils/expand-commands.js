@@ -1,13 +1,24 @@
-const expandCommands = (commands, parents = [], root = true) => {
-  let addedElements = 0;
+const expandCommands = (commandsList) => {
+  if (!Array.isArray(commandsList)) {
+    return Object.fromEntries(expandCommands(Object.entries(commandsList)));
+  }
 
-  const commandsToProcess = Array.isArray(commands)
-    ? [...commands]
-    : Object.entries(commands);
+  let indexOffset = 0;
+  let currentCommands = commandsList;
 
-  commandsToProcess.forEach(([id, command], i) => {
+  for (let i = 0; i + indexOffset < currentCommands.length; i++) {
+    const j = i + indexOffset;
+
+    const [id, command] = currentCommands[j];
+
+    if (!command.commandsPath) {
+      command.commandsPath = [];
+    }
+
+    command.commandsPath = [...command.commandsPath, id];
+
     if (!command?.handle || typeof command.handle !== "object") {
-      return;
+      continue;
     }
 
     const entries = Object.entries(command.handle);
@@ -30,17 +41,17 @@ const expandCommands = (commands, parents = [], root = true) => {
       ];
     });
 
-    const items = expandCommands(addedSubCommands, [...parents, id], false);
+    const processedCommands = expandCommands(addedSubCommands);
+    currentCommands = [
+      ...currentCommands.slice(0, j + indexOffset),
+      ...processedCommands,
+      ...currentCommands.slice(j + indexOffset + 1),
+    ];
 
-    commandsToProcess.splice(i + addedElements, 1, ...items);
-    addedElements += items.length;
-  });
-
-  if (root) {
-    return Object.fromEntries(commandsToProcess);
+    indexOffset += addedSubCommands.length - 1;
   }
 
-  return commandsToProcess;
+  return currentCommands;
 };
 
 module.exports.expandCommands = expandCommands;
