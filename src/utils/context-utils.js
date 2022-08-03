@@ -38,15 +38,13 @@ const launchCommand = async function launchCommand(
     }
   }
 
-  const handler = command
-    .handle(context, values, helpers, options)
-    .catch((e) => {
-      if (command.skipError) {
-        return;
-      }
+  const handler = command.handle(values, helpers, options).catch((e) => {
+    if (command.skipError) {
+      return;
+    }
 
-      throw e;
-    });
+    throw e;
+  });
 
   function handleResult(result) {
     console.log(`${command.label || command.name || command.id}: done`);
@@ -59,14 +57,12 @@ const launchCommand = async function launchCommand(
   }
 
   if (command.runAsync) {
-    promisesStack.push(
-      handler(context, values, helpers, options).then(handleResult)
-    );
+    promisesStack.push(handler.then(handleResult));
 
     return;
   }
 
-  handleResult(await command.handle(values, helpers, options));
+  handleResult(await handler);
 };
 
 const launchCommands = async function launchCommands(
