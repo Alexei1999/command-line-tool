@@ -1,9 +1,9 @@
-const path = require("path");
-const fs = require("fs");
+import path from "path";
+import fs from "fs";
 
-const { options } = require("./options/index");
+import { options } from "./options/index";
 
-const downloadRepo = {
+export const downloadRepo = {
   requiredOptions: [options.repoUrl.name],
   contextPath: "path",
   name: "download-repo",
@@ -57,5 +57,3 @@ const downloadRepo = {
     return folderPath;
   },
 };
-
-module.exports.downloadRepo = downloadRepo;

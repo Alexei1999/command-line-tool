@@ -1,3 +1,3 @@
-const { core } = require("./core/index");
+import { core } from "./core/index";
 
-module.exports.commandLineTool = core;
+export const commandLineTool = core;

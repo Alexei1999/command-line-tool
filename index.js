@@ -1,16 +1,14 @@
-const { options } = require("./config/options");
-const { variables } = require("./config/variables");
-const { calculatedOptions } = require("./config/options");
-const { commands } = require("./config/commands/index");
+import { options } from "./config/options";
+import { variables } from "./config/variables";
+import { commands } from "./config/commands/index";
 
-const { coreCommands } = require("./config/core-commands/index");
+import { coreCommands } from "./config/core-commands/index";
 
-const { commandLineTool } = require("./src/index");
+import { commandLineTool } from "./src/index";
 
 commandLineTool({
   coreCommands,
   commands,
   options,
-  calculatedOptions,
   variables,
 });

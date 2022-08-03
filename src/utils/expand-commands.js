@@ -54,4 +54,5 @@ const expandCommands = (commandsList) => {
   return currentCommands;
 };
 
-module.exports.expandCommands = expandCommands;
+const _expandCommands = expandCommands;
+export { _expandCommands as expandCommands };

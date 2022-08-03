@@ -1,8 +1,8 @@
-const { logErrorContext } = require("../utils/functional-utils");
+import { logErrorContext } from "../utils/functional-utils";
 
-const { pipeLine } = require("../utils/functional-utils");
+import { pipeLine } from "../utils/functional-utils";
 
-const { parseArgsLib } = require("./parse-args-lib");
+import { parseArgsLib } from "./parse-args-lib";
 
 const commonLib = {
   parseFileTemplate(template, args) {
@@ -85,4 +85,4 @@ const commonLib = {
   },
 };
 
-module.exports.commonLib = commonLib;
+export { commonLib };

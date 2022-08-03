@@ -1,9 +1,9 @@
-const { init } = require("./init");
-const { main } = require("./main");
+import { init } from "./init";
+import { main } from "./main";
 
 const coreCommands = {
   init,
   main,
 };
 
-module.exports.coreCommands = coreCommands;
+export { coreCommands };

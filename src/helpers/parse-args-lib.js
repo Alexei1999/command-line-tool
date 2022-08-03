@@ -69,4 +69,4 @@ const parseArgsLib = {
   },
 };
 
-module.exports.parseArgsLib = parseArgsLib;
+export { parseArgsLib };

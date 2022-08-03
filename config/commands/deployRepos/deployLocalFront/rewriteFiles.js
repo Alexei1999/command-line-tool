@@ -1,7 +1,7 @@
-const path = require("path");
-const fs = require("fs");
+import { resolve } from "path";
+import { existsSync, unlinkSync, writeFileSync } from "fs";
 
-const { downloadRepo } = require("./downloadRepo");
+import { downloadRepo } from "./downloadRepo";
 
 const rewriteFiles = {
   name: "rewrite-files",
@@ -21,12 +21,12 @@ const rewriteFiles = {
     await launchBlock(
       () => {
         const configFile = parseFileTemplate(values.configFileTemplate, values);
-        const filePath = path.resolve(repoPath, `./${values.configFileName}`);
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(path.resolve(filePath));
+        const filePath = resolve(repoPath, `./${values.configFileName}`);
+        if (existsSync(filePath)) {
+          unlinkSync(resolve(filePath));
         }
 
-        fs.writeFileSync(filePath, configFile);
+        writeFileSync(filePath, configFile);
       },
       {
         name: "Rewriting config file",
@@ -38,13 +38,13 @@ const rewriteFiles = {
     await launchBlock(
       () => {
         const configFile = parseFileTemplate(values.npmrcTemplate, values);
-        const filePath = path.resolve(repoPath, `./.npmrc`);
+        const filePath = resolve(repoPath, `./.npmrc`);
 
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(path.resolve(filePath));
+        if (existsSync(filePath)) {
+          unlinkSync(resolve(filePath));
         }
 
-        fs.writeFileSync(filePath, configFile);
+        writeFileSync(filePath, configFile);
       },
       {
         name: "Rewriting .npmrc file",
@@ -55,4 +55,4 @@ const rewriteFiles = {
   },
 };
 
-module.exports.rewriteFiles = rewriteFiles;
+export { rewriteFiles };

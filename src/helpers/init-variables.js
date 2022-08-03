@@ -1,10 +1,10 @@
-const { parseArgsLib } = require("../helpers/parse-args-lib.js");
-const { commonLib } = require("../helpers/common-lib.js");
-const { getConfigurableLib } = require("../helpers/configurable-lib.js");
-const { logErrorContext } = require("../utils/functional-utils.js");
-const { launchCommand, launchCommands } = require("../utils/context-utils.js");
+import { parseArgsLib } from "../helpers/parse-args-lib.js";
+import { commonLib } from "../helpers/common-lib.js";
+import { getConfigurableLib } from "../helpers/configurable-lib.js";
+import { logErrorContext } from "../utils/functional-utils.js";
+import { launchCommand, launchCommands } from "../utils/context-utils.js";
 
-const { expandCommands } = require("../utils/expand-commands.js");
+import { expandCommands } from "../utils/expand-commands.js";
 
 const initVariables = ({
   commands = {},
@@ -224,4 +224,4 @@ const initVariables = ({
   };
 };
 
-module.exports.initVariables = initVariables;
+export { initVariables };

@@ -26,5 +26,12 @@
   "bugs": {
     "url": "https://github.com/Alexei1999/command-line-tool/issues"
   },
-  "homepage": "https://github.com/Alexei1999/command-line-tool#readme"
+  "homepage": "https://github.com/Alexei1999/command-line-tool#readme",
+  "type": "module",
+  "devDependencies": {
+    "@babel/core": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
+    "babel-loader": "^8.2.5",
+    "webpack": "^5.74.0"
+  }
 }

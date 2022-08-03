@@ -1,5 +1,5 @@
-const path = require("path");
-const fs = require("fs");
+import { resolve } from "path";
+import { readFileSync } from "fs";
 
 const readConfig = {
   contextPath: "config",
@@ -26,11 +26,11 @@ const readConfig = {
       return null;
     }
 
-    const targetPath = path.resolve(root, safeArgValues.configPath);
+    const targetPath = resolve(root, safeArgValues.configPath);
 
     const initConfigContent = await launchBlock(
       async () => {
-        return fs.readFileSync(targetPath, "utf8");
+        return readFileSync(targetPath, "utf8");
       },
       async () => null,
       {
@@ -55,4 +55,4 @@ const readConfig = {
   },
 };
 
-module.exports.readConfig = readConfig;
+export { readConfig };

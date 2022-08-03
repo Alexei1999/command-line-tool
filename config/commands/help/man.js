@@ -89,4 +89,4 @@ const man = {
   },
 };
 
-module.exports.man = man;
+export { man };

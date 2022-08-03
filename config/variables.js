@@ -1,7 +1,7 @@
-const path = require("path");
+import { resolve } from "path";
 
 const variables = {
-  root: path.resolve("./"),
+  root: resolve("./"),
 };
 
-module.exports.variables = variables;
+export { variables };

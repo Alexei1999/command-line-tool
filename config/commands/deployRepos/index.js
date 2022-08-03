@@ -1,7 +1,7 @@
-const { deployLocalFront } = require("./deployLocalFront");
+import { deployLocalFront } from "./deployLocalFront";
 
 const deployRepos = {
   deployLocalFront,
 };
 
-module.exports.deployRepos = deployRepos;
+export { deployRepos };

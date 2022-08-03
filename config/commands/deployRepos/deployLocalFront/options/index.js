@@ -20,7 +20,7 @@ _auth=<npmrcToken>`,
   CONFIG_FILE_NAME: "serverConfig.ts",
 };
 
-module.exports.options = {
+export const options = {
   branch: {
     name: "branch",
     description: "Branch name",
@@ -104,7 +104,7 @@ module.exports.options = {
   },
 };
 
-module.exports.calculatedOptions = (definedValues = {}) => {
+export const calculatedOptions = (definedValues = {}) => {
   return {
     npmrcToken: Buffer.from(
       `${definedValues.nexusLogin}:${definedValues.nexusPassword}`

@@ -1,9 +1,9 @@
-const { readConfig } = require("./readConfig");
-const { writeConfig } = require("./writeConfig");
+import { readConfig } from "./readConfig";
+import { writeConfig } from "./writeConfig";
 
 const config = {
   readConfig,
   writeConfig,
 };
 
-module.exports.config = config;
+export { config };

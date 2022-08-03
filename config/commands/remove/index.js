@@ -1,7 +1,7 @@
-const { removeConfig } = require("./removeConfig");
+import { removeConfig } from "./removeConfig";
 
 const remove = {
   removeConfig,
 };
 
-module.exports.remove = remove;
+export { remove };

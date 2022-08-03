@@ -1,5 +1,5 @@
-const path = require("path");
-const fs = require("fs");
+import { resolve } from "path";
+import { existsSync, unlinkSync, writeFileSync } from "fs";
 
 const writeConfig = {
   contextVariable: "config",
@@ -19,15 +19,15 @@ const writeConfig = {
       throw new Error(`Config path is required`);
     }
 
-    const targetPath = path.resolve(root, values.configPath);
+    const targetPath = resolve(root, values.configPath);
 
-    if (fs.existsSync(targetPath)) {
-      fs.unlinkSync(targetPath);
+    if (existsSync(targetPath)) {
+      unlinkSync(targetPath);
     }
 
     await launchBlock(
       async () => {
-        fs.writeFileSync(targetPath, JSON.stringify(writeConfig, null, 2));
+        writeFileSync(targetPath, JSON.stringify(writeConfig, null, 2));
       },
       () => null,
       {
@@ -42,4 +42,4 @@ const writeConfig = {
   },
 };
 
-module.exports.writeConfig = writeConfig;
+export { writeConfig };

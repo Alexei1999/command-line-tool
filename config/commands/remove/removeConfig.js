@@ -1,7 +1,7 @@
-const path = require("path");
-const fs = require("fs");
+import { resolve } from "path";
+import { unlinkSync } from "fs";
 
-const { options } = require("../../options");
+import { options } from "../../options";
 
 const removeConfig = {
   name: "remove-config",
@@ -10,11 +10,11 @@ const removeConfig = {
   allowedCommands: [],
   command: ["remove", "remove-config", "rc"],
   handle: async ({ safeArgValues, env: { root } }, { launchBlock }) => {
-    const targetPath = path.resolve(root, safeArgValues.configPath);
+    const targetPath = resolve(root, safeArgValues.configPath);
 
     await launchBlock(
       () => {
-        fs.unlinkSync(targetPath);
+        unlinkSync(targetPath);
       },
       {
         name: "Unlink config",
@@ -26,4 +26,4 @@ const removeConfig = {
   },
 };
 
-module.exports.removeConfig = removeConfig;
+export { removeConfig };

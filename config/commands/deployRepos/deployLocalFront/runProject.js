@@ -1,6 +1,6 @@
-const { options } = require("./options/index");
+import { options } from "./options/index";
 
-const { downloadRepo } = require("./downloadRepo");
+import { downloadRepo } from "./downloadRepo";
 
 const runProject = {
   name: "run-project",
@@ -44,4 +44,4 @@ const runProject = {
   },
 };
 
-module.exports.runProject = runProject;
+export { runProject };

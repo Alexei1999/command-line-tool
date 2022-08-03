@@ -93,4 +93,4 @@ const help = {
   },
 };
 
-module.exports.help = help;
+export { help };

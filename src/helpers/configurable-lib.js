@@ -1,7 +1,7 @@
-const { promisifiedSpawn, promisifiedExec } = require("../utils/cmd-utils");
+import { promisifiedSpawn, promisifiedExec } from "../utils/cmd-utils";
 
 const getConfigurableLib = ({}, args) => ({
   execCommand: !args.useExec ? promisifiedSpawn : promisifiedExec,
 });
 
-module.exports.getConfigurableLib = getConfigurableLib;
+export { getConfigurableLib };

@@ -1,4 +1,4 @@
-const { setValueByPath } = require("./functional-utils");
+import { setValueByPath } from "./functional-utils";
 
 const contextSetter = function contextSetter(command, context, data) {
   if (!command?.contextPath) {
@@ -88,8 +88,4 @@ const launchCommands = async function launchCommands(
   await Promise.all(promisesStack);
 };
 
-module.exports = {
-  contextSetter,
-  launchCommand,
-  launchCommands,
-};
+export { contextSetter, launchCommand, launchCommands };

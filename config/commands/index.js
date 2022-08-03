@@ -1,7 +1,7 @@
-const { deployRepos } = require("./deployRepos/index");
-const { help } = require("./help/index");
-const { config } = require("./config/index");
-const { remove } = require("./remove/index");
+import { deployRepos } from "./deployRepos/index";
+import { help } from "./help/index";
+import { config } from "./config/index";
+import { remove } from "./remove/index";
 
 const commands = {
   ...help,
@@ -10,4 +10,4 @@ const commands = {
   ...remove,
 };
 
-module.exports.commands = commands;
+export { commands };

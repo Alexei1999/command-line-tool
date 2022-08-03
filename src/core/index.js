@@ -1,6 +1,6 @@
-const { initVariables } = require("../helpers/init-variables.js");
+import { initVariables } from "../helpers/init-variables.js";
 
-const { launchCommands } = require("../utils/context-utils");
+import { launchCommands } from "../utils/context-utils";
 
 /**
  * Parse command line arguments and run the commands.
@@ -13,13 +13,13 @@ const { launchCommands } = require("../utils/context-utils");
  *
  * @param {Object} configs - Config object.
  */
-module.exports.core = async ({
+export async function core({
   coreCommands = {},
   commands = {},
   options = {},
   calculatedOptions = () => ({}),
   variables = {},
-} = {}) => {
+} = {}) {
   try {
     const { helpers, commonValues, context, commanderHelpers } = initVariables({
       commands,
@@ -52,4 +52,4 @@ module.exports.core = async ({
     console.error(e);
     return process.exit(1);
   }
-};
+}

@@ -1,7 +1,7 @@
-const path = require("path");
-const fs = require("fs");
+import { resolve } from "path";
+import { rmdirSync } from "fs";
 
-const { options } = require("./options/index");
+import { options } from "./options/index";
 
 const removeRepo = {
   name: "remove-repo",
@@ -23,11 +23,11 @@ const removeRepo = {
   },
   handle: async ({ values, env: { root } }, { launchBlock }) => {
     const folderName = values.repoUrl.split("/").pop().replace(".git", "");
-    const folderPath = path.resolve(root, folderName);
+    const folderPath = resolve(root, folderName);
 
     await launchBlock(
       () => {
-        fs.rmdirSync(folderPath, { recursive: true, force: true });
+        rmdirSync(folderPath, { recursive: true, force: true });
       },
       {
         fatal: false,
@@ -38,4 +38,4 @@ const removeRepo = {
   },
 };
 
-module.exports.removeRepo = removeRepo;
+export { removeRepo };

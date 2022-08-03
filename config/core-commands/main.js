@@ -48,4 +48,4 @@ const main = {
   },
 };
 
-module.exports.main = main;
+export { main };

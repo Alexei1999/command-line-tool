@@ -1,4 +1,4 @@
-module.exports.logErrorContext = function (name, context, error) {
+export function logErrorContext (name, context, error) {
   if (!name) {
     throw new Error("Context name is required");
   }
@@ -15,9 +15,9 @@ module.exports.logErrorContext = function (name, context, error) {
 
   error && console.error(error);
   console.groupEnd();
-};
+}
 
-module.exports.pipeLine = function pipeLine(...args) {
+export function pipeLine(...args) {
   return args.reduce((acc, arg) => {
     if (typeof arg !== "function") {
       return arg;
@@ -25,9 +25,9 @@ module.exports.pipeLine = function pipeLine(...args) {
 
     return arg(acc);
   }, undefined);
-};
+}
 
-module.exports.setValueByPath = function setValueByPath(path, obj, value) {
+export function setValueByPath(path, obj, value) {
   const pathParts = path.split(".");
 
   let currentContext = obj;
@@ -43,4 +43,4 @@ module.exports.setValueByPath = function setValueByPath(path, obj, value) {
   }
 
   currentContext[pathParts[pathParts.length - 1]] = value;
-};
+}

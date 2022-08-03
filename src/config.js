@@ -1,1 +1,1 @@
-module.exports.USE_SPAWN = false;
+export const USE_SPAWN = false;

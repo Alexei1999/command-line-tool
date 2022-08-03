@@ -2,7 +2,7 @@ const DEFAULT_CONSTANTS = {
   CONFIG_PATH: "config.json",
 };
 
-module.exports.options = {
+export const options = {
   configPath: {
     name: "config-path",
     description: "Config path",

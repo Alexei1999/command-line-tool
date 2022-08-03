@@ -1,12 +1,12 @@
-const { downloadRepo } = require("./downloadRepo");
-const { rewriteFiles } = require("./rewriteFiles");
-const { runProject } = require("./runProject");
-const { removeRepo } = require("./removeRepo");
+import { downloadRepo } from "./downloadRepo";
+import { rewriteFiles } from "./rewriteFiles";
+import { runProject } from "./runProject";
+import { removeRepo } from "./removeRepo";
 
-const { writeConfig } = require("../../config/writeConfig");
-const { readConfig } = require("../../config/readConfig");
+import { writeConfig } from "../../config/writeConfig";
+import { readConfig } from "../../config/readConfig";
 
-const { options, calculatedOptions } = require("./options");
+import { options, calculatedOptions } from "./options";
 
 const deployLocalFront = {
   default: true,
@@ -24,4 +24,4 @@ const deployLocalFront = {
   },
 };
 
-module.exports.deployLocalFront = deployLocalFront;
+export { deployLocalFront };

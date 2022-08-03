@@ -1,15 +1,15 @@
-const util = require("util");
+import { promisify } from "util";
 
-const child_process = require("child_process");
+import { spawn as _spawn, exec as _exec } from "child_process";
 
-const spawn = child_process.spawn;
-const exec = util.promisify(child_process.exec);
+const spawn = _spawn;
+const exec = promisify(_exec);
 
 const commandOptions = {
   npm: () => (/^win/.test(process.platform) ? "npm.cmd" : "npm"),
 };
 
-module.exports.promisifiedSpawn = function promisifiedSpawn(input, options) {
+export function promisifiedSpawn(input, options) {
   const commandPosition = input.indexOf(" ");
   const command = input.substring(0, commandPosition);
   const args = input.substring(commandPosition + 1).split(" ");
@@ -80,9 +80,9 @@ module.exports.promisifiedSpawn = function promisifiedSpawn(input, options) {
       reject(err);
     });
   });
-};
+}
 
-module.exports.promisifiedExec = function promisifiedExec(input, options) {
+export function promisifiedExec(input, options) {
   console.log(input, options);
   return exec(input, options);
-};
+}

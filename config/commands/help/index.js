@@ -1,9 +1,9 @@
-const { man } = require("./man");
-const { help: _help } = require("./help");
+import { man } from "./man";
+import { help as _help } from "./help";
 
 const help = {
   man,
   help: _help,
 };
 
-module.exports.help = help;
+export { help };
