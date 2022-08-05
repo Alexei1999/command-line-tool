@@ -1,4 +1,4 @@
-import { initVariables } from "../helpers/init-variables.js";
+import { initVariables } from "../helpers/init-variables";
 
 import { launchCommands } from "../utils/context-utils";
 

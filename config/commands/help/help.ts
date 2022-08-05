@@ -70,7 +70,7 @@ const help = {
     options &&
       Object.entries(options).forEach(([key, option]) => {
         if (option.defaultValue?.length > 50) {
-          console.log(`--- ${key} ---`);
+          console.log(`${key}:`);
           console.log(`${option.defaultValue}`);
           return;
         }
@@ -83,7 +83,7 @@ const help = {
     env &&
       Object.entries(env).forEach(([key, value]) => {
         if (value?.length > 50) {
-          console.log(`--- ${key} ---`);
+          console.log(`${key}:`);
           console.log(`${value}`);
           return;
         }

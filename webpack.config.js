@@ -1,10 +1,6 @@
-import * as url from "url";
-
-const __dirname = url.fileURLToPath(new URL(".", import.meta.url));
-
-export default {
+module.exports = {
   target: "node",
-  entry: "./index.js",
+  entry: "./index.ts",
   output: {
     path: __dirname,
     filename: "script.js",
@@ -12,15 +8,18 @@ export default {
   module: {
     rules: [
       {
-        test: /\.(js)$/,
+        test: /\.(js|ts)$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
-        },
-        resolve: {
-          fullySpecified: false,
+          options: {
+            presets: ["@babel/preset-typescript"],
+          },
         },
       },
     ],
+  },
+  resolve: {
+    extensions: [".ts", ".js"],
   },
 };

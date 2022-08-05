@@ -1,10 +1,10 @@
-import { parseArgsLib } from "../helpers/parse-args-lib.js";
-import { commonLib } from "../helpers/common-lib.js";
-import { getConfigurableLib } from "../helpers/configurable-lib.js";
-import { logErrorContext } from "../utils/functional-utils.js";
-import { launchCommand, launchCommands } from "../utils/context-utils.js";
+import { parseArgsLib } from "./parse-args-lib";
+import { commonLib } from "./common-lib";
+import { getConfigurableLib } from "./configurable-lib";
+import { logErrorContext } from "../utils/functional-utils";
+import { launchCommand, launchCommands } from "../utils/context-utils";
 
-import { expandCommands } from "../utils/expand-commands.js";
+import { expandCommands } from "../utils/expand-commands";
 
 const initVariables = ({
   commands = {},
@@ -15,10 +15,15 @@ const initVariables = ({
   const context = {};
 
   const processedCommands = Object.fromEntries(
-    Object.entries(commands).map(([key, value]) => [
+    Object.entries(commands).map(([key, { allowedCommands, ...value }]) => [
       key,
       {
         ...value,
+        allowedCommands: Array.isArray(allowedCommands)
+          ? allowedCommands
+          : allowedCommands === "any" || allowedCommands === "*"
+          ? undefined
+          : [],
         id: key,
       },
     ])
@@ -30,18 +35,19 @@ const initVariables = ({
         throw new Error(`Command ${command.name} has no command or option`);
       }
 
-      return (
-        command.default ||
-        (command.command && Array.isArray(command.command)
+      const isDefault = command.default;
+      const existInCommands =
+        command.command &&
+        (Array.isArray(command.command)
           ? command.command.some(parseArgsLib.hasCommand)
-          : parseArgsLib.hasCommand(command.command)) ||
-        (command.option &&
-          parseArgsLib.extractPresence(parseArgsLib.getOption(command.option)))
-      );
+          : parseArgsLib.hasCommand(command.command));
+      const existInOptions =
+        command.option &&
+        parseArgsLib.extractPresence(parseArgsLib.getOption(command.option));
+
+      return isDefault || existInCommands || existInOptions;
     })
   );
-
-  console.log(filteredCommands);
 
   const nonAlternateCommand = Object.values(filteredCommands).find((command) =>
     Array.isArray(command.allowedCommands)
